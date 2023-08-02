@@ -1,4 +1,5 @@
 using DBDLE_BackEnd.Services.DailyCharacter;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.GetConnectionString("Default")));
+
 
 //Maybe change this in the future
 builder.Services.Configure<DailyCharacterConfigruation>(builder.Configuration.GetSection("DailyCharacter"));
