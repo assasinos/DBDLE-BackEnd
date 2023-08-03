@@ -39,7 +39,7 @@ public class DailyCharacterUpdateService : BackgroundService
                 {
                     model.Image = imageModel;
                     return model;
-                },splitOn:"ReleaseYear")).FirstOrDefault() ?? throw new Exception($"Could not find character with offset {randomOffset}");
+                },splitOn:"ImagePath")).FirstOrDefault() ?? throw new Exception($"Could not find character with offset {randomOffset}");
             _dailyCharacter.UpdateDailyCharacter(character);
 
             
