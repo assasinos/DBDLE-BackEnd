@@ -1,16 +1,17 @@
 ﻿using DBDLE_BackEnd.Models;
+using Microsoft.Extensions.Options;
 
 namespace DBDLE_BackEnd.Services.DailyCharacter;
 
 public class DailyCharacter : IDailyCharacter
 {
-    
-    private CharacterModel _dailyCharacter;
-    private readonly DailyCharacterConfigruation _configuration;
+    //Shouldn't be null
+    private CharacterModel _dailyCharacter = null!;
+    private readonly DailyCharacterConfiguration _configuration;
 
-    public DailyCharacter(DailyCharacterConfigruation configruation)
+    public DailyCharacter(IOptions<DailyCharacterConfiguration> configuration)
     {
-        _configruation = configruation;
+        _configuration = configuration.Value;
     }
 
 
@@ -21,5 +22,5 @@ public class DailyCharacter : IDailyCharacter
         _dailyCharacter = character;
     }
 
-    public int GetMaxOffset() => _configruation.MaxOffset;
+    public int GetMaxOffset() => _configuration.MaxOffset;
 }

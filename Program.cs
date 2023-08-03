@@ -1,4 +1,5 @@
 using DBDLE_BackEnd.Services.DailyCharacter;
+using DBDLE_BackEnd.Services.DailyCharacterUpdate;
 using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,7 @@ builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.Get
 builder.Services.Configure<DailyCharacterConfiguration>(builder.Configuration.GetSection("DailyCharacter"));
 builder.Services.AddSingleton<IDailyCharacter, DailyCharacter>();
 
-
+builder.Services.AddHostedService<DailyCharacterUpdateService>();
 
 
 var app = builder.Build();
