@@ -14,7 +14,7 @@ builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.Get
 
 
 //Maybe change this in the future
-builder.Services.Configure<DailyCharacterConfigruation>(builder.Configuration.GetSection("DailyCharacter"));
+builder.Services.Configure<DailyCharacterConfiguration>(builder.Configuration.GetSection("DailyCharacter"));
 builder.Services.AddSingleton<IDailyCharacter, DailyCharacter>();
 
 

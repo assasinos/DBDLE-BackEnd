@@ -5,8 +5,8 @@ namespace DBDLE_BackEnd.Services.DailyCharacter;
 public class DailyCharacter : IDailyCharacter
 {
     
-    private CharacterModel? _dailyCharacter;
-    private readonly DailyCharacterConfigruation _configruation;
+    private CharacterModel _dailyCharacter;
+    private readonly DailyCharacterConfigruation _configuration;
 
     public DailyCharacter(DailyCharacterConfigruation configruation)
     {
@@ -14,9 +14,9 @@ public class DailyCharacter : IDailyCharacter
     }
 
 
-    public CharacterModel? GetDailyCharacter() => _dailyCharacter;
+    public CharacterModel GetDailyCharacter() => _dailyCharacter;
 
-    public void UpdateDailyCharacter(CharacterModel? character)
+    public void UpdateDailyCharacter(CharacterModel character)
     {
         _dailyCharacter = character;
     }

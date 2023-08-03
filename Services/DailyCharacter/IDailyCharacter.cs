@@ -7,10 +7,7 @@ public interface IDailyCharacter
     
     //Read from private property
     CharacterModel GetDailyCharacter();
-    
     void UpdateDailyCharacter(CharacterModel character);
-    
-    
     //Read the maximum value for random character selection
     int GetMaxOffset();
 
