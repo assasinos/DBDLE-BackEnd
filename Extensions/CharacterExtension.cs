@@ -20,6 +20,17 @@ public static class CharacterExtension
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         });
     }
+    public static string ConvertToJson(this IEnumerable<CharacterModel> character)
+    {
+        return JsonSerializer.Serialize(character, new JsonSerializerOptions()
+        {
+            Converters =
+            {
+                new JsonStringEnumConverter()
+            },
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        });
+    }
 
     public static string ConvertToBase64Json(this CharacterModel character)
     {
