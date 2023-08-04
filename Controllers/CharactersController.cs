@@ -1,4 +1,5 @@
-﻿using DBDLE_BackEnd.Services.DailyCharacter;
+﻿using DBDLE_BackEnd.Extensions;
+using DBDLE_BackEnd.Services.DailyCharacter;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 
@@ -18,7 +19,10 @@ public class CharactersController : Controller
         _connection = connection;
         _dailyCharacter = dailyCharacter;
     }
-    
-    
 
+
+    [HttpGet]
+    public IActionResult GetDailyCharacter() =>
+        //Convert to JSON bcs of the enum and null values
+        Ok( _dailyCharacter.GetDailyCharacter().ConvertToJson());
 }
