@@ -23,6 +23,8 @@ public class CharactersController : Controller
 
     [HttpGet]
     public IActionResult GetDailyCharacter() =>
-        //Convert to JSON bcs of the enum and null values
-        Ok( _dailyCharacter.GetDailyCharacter().ConvertToJson());
+        //Convert to JSON bcs of the enum and null values,
+        //Then convert to base64 to hide the data
+        Ok( _dailyCharacter.GetDailyCharacter().ConvertToBase64Json());
+    
 }
