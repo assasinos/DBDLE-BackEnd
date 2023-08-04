@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using DBDLE_BackEnd.Models;
 
@@ -20,5 +21,12 @@ public static class CharacterExtension
         });
     }
 
+    public static string ConvertToBase64Json(this CharacterModel character)
+    {
+
+        var json = character.ConvertToJson();
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+    }
 
 }
