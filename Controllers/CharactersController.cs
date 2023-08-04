@@ -7,15 +7,14 @@ using MySqlConnector;
 
 namespace DBDLE_BackEnd.Controllers;
 
-
 [Controller]
 [Route("api/[controller]/[action]")]
 public class CharactersController : Controller
 {
     private readonly MySqlConnection _connection;
     private readonly IDailyCharacter _dailyCharacter;
-    
-    
+
+
     public CharactersController(MySqlConnection connection, IDailyCharacter dailyCharacter)
     {
         _connection = connection;
@@ -24,16 +23,20 @@ public class CharactersController : Controller
 
 
     [HttpGet]
-    public IActionResult GetDailyCharacter() =>
+    public IActionResult GetDailyCharacter()
+    {
+        Response.ContentType = "application/json";
         //Convert to JSON bcs of the enum and null values,
         //Then convert to base64 to hide the data
-        Ok( _dailyCharacter.GetDailyCharacter().ConvertToBase64Json());
+        return Ok(_dailyCharacter.GetDailyCharacter().ConvertToBase64Json());
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAllCharacters()
     {
         //1->n relationship in case I want to serve image from backend or different server
-        var cmd = new CommandDefinition($@"SELECT C.CharacterName, C.Gender, C.Origin, C.Height, C.Difficulty, C.ReleaseYear, I.ImagePath FROM `Characters` C join Images I on I.ImageUID = C.ImageUID");
+        var cmd = new CommandDefinition(
+            $@"SELECT C.CharacterName, C.Gender, C.Origin, C.Height, C.Difficulty, C.ReleaseYear, I.ImagePath FROM `Characters` C join Images I on I.ImageUID = C.ImageUID");
 
 
         var character = await _connection.QueryAsync<CharacterModel, ImageModel, CharacterModel>(cmd,
@@ -43,8 +46,8 @@ public class CharactersController : Controller
                 return model;
             }, splitOn: "ImagePath");
         //Convert to JSON bcs of the enum and null values
+
+        Response.ContentType = "application/json";
         return Ok(character.ConvertToJson());
     }
-    
-    
 }
