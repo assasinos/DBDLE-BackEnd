@@ -1,11 +1,15 @@
+using System.Threading.RateLimiting;
 using DBDLE_BackEnd.Services.DailyCharacter;
 using DBDLE_BackEnd.Services.DailyCharacterUpdate;
+using Microsoft.AspNetCore.RateLimiting;
 using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-//CORS
+
+#region CORS
+
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var cors = builder.Configuration.GetSection("CORS") ?? throw new Exception("CORS not found, check appsettings file");
@@ -19,7 +23,25 @@ builder.Services.AddCors(options =>
 });
 
 
-// Add services to the container.
+#endregion
+
+#region RateLimiter
+
+const string RateLimitierPolicy = "sliding";
+
+builder.Services.AddRateLimiter(_ => _
+    .AddSlidingWindowLimiter(policyName: RateLimitierPolicy, options =>
+    {
+        options.PermitLimit = 100;
+        options.Window = TimeSpan.FromSeconds(30);
+        options.SegmentsPerWindow = 2;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 1000;
+    }));
+
+
+#endregion
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,4 +73,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors(myAllowSpecificOrigins);
+app.UseRateLimiter();
+
 app.Run();
