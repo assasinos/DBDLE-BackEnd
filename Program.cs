@@ -4,6 +4,21 @@ using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+//CORS
+const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+var cors = builder.Configuration.GetSection("CORS") ?? throw new Exception("CORS not found, check appsettings file");
+var corsOrigins = cors.GetSection("AllowedOrigins").Get<string[]>() ?? throw new Exception("CORS origins not found, check appsettings file");
+var corsMethods = cors.GetSection("AllowedMethods").Get<string[]>() ?? throw new Exception("CORS methods not found, check appsettings file");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowSpecificOrigins,
+        policy => { policy.WithOrigins(corsOrigins).WithMethods(corsMethods).AllowAnyHeader(); });
+});
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -35,5 +50,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors(myAllowSpecificOrigins);
 app.Run();
