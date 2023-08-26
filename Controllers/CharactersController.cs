@@ -3,11 +3,14 @@ using DBDLE_BackEnd.Extensions;
 using DBDLE_BackEnd.Models;
 using DBDLE_BackEnd.Services.DailyCharacter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.RateLimiting;
 using MySqlConnector;
 
 namespace DBDLE_BackEnd.Controllers;
 
 [Controller]
+[EnableRateLimiting("sliding")]
 [Route("api/[controller]/[action]")]
 public class CharactersController : Controller
 {
@@ -32,6 +35,8 @@ public class CharactersController : Controller
     }
 
     [HttpGet]
+    //in case if something is changed in the database
+    [OutputCache]
     public async Task<IActionResult> GetAllCharacters()
     {
         //1->n relationship in case I want to serve image from backend or different server
