@@ -9,7 +9,7 @@ public class CharacterModel
     public HeightEnum Height { get; set; }
     public int ReleaseYear { get; set; }
     public DifficultyEnum Difficulty { get; set; }
-    public ImageModel Image { get; set; }
+    public ImageModel Image { get; set; } = null!;
 
 
 }
