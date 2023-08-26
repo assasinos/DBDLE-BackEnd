@@ -1,6 +1,7 @@
 using System.Threading.RateLimiting;
 using DBDLE_BackEnd.Services.DailyCharacter;
 using DBDLE_BackEnd.Services.DailyCharacterUpdate;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MySqlConnector;
 
@@ -29,7 +30,7 @@ builder.Services.AddCors(options =>
 
 const string RateLimitierPolicy = "sliding";
 
-builder.Services.AddRateLimiter(_ => _
+builder.Services.AddRateLimiter(l => l
     .AddSlidingWindowLimiter(policyName: RateLimitierPolicy, options =>
     {
         options.PermitLimit = 100;
@@ -43,10 +44,21 @@ builder.Services.AddRateLimiter(_ => _
 #endregion
 
 
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder =>
+    {
+        builder.Expire(TimeSpan.FromDays(1));
+    });
+});
 
 builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.GetConnectionString("Default")));
 
@@ -68,6 +80,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
 
 app.UseAuthorization();
 
