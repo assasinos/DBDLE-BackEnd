@@ -20,17 +20,14 @@ public class DailyCharacterUpdateService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var random = new Random();
         while (!stoppingToken.IsCancellationRequested)
         {
-
-            //Add random selection of character
-
-            var randomOffset = random.Next(0, _dailyCharacter.GetMaxOffset());
-
             
+
             //1->n relationship in case I want to serve image from backend or different server
-            var cmd = new CommandDefinition($@"SELECT C.CharacterName, C.Gender, C.Origin, C.Height, C.Difficulty, C.ReleaseYear, I.ImagePath FROM `Characters` C join Images I on I.ImageUID = C.ImageUID LIMIT 1 OFFSET {randomOffset}");
+            
+            //Documentation says this SQL query might be slow on large tables, but I don't think it will be a problem here
+            var cmd = new CommandDefinition($@"SELECT C.CharacterName, C.Gender, C.Origin, C.Height, C.Difficulty, C.ReleaseYear, I.ImagePath FROM `Characters` C join Images I on I.ImageUID = C.ImageUID ORDER BY RAND() LIMIT 1");
 
             
             
@@ -39,7 +36,7 @@ public class DailyCharacterUpdateService : BackgroundService
                 {
                     model.Image = imageModel;
                     return model;
-                },splitOn:"ImagePath")).FirstOrDefault() ?? throw new Exception($"Could not find character with offset {randomOffset}");
+                },splitOn:"ImagePath")).FirstOrDefault() ?? throw new Exception($"Could not find character");
             _dailyCharacter.UpdateDailyCharacter(character);
 
             

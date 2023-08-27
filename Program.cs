@@ -63,8 +63,7 @@ builder.Services.AddOutputCache(options =>
 builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.GetConnectionString("Default")));
 
 
-//Maybe change this in the future
-builder.Services.Configure<DailyCharacterConfiguration>(builder.Configuration.GetSection("DailyCharacter"));
+
 builder.Services.AddSingleton<IDailyCharacter, DailyCharacter>();
 
 builder.Services.AddHostedService<DailyCharacterUpdateService>();
