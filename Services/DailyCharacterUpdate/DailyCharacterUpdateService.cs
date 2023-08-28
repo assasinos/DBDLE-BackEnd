@@ -41,7 +41,7 @@ public class DailyCharacterUpdateService : BackgroundService
 
             
             //1 minute for testing purposes, will be changed to 24 hours
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
         }
     }
 }
