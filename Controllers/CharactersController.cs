@@ -25,6 +25,8 @@ public class CharactersController : Controller
     }
 
 
+    
+    //This is stored in memory, so it's not a problem to call it every time
     [HttpGet]
     public IActionResult GetDailyCharacter()
     {
