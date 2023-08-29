@@ -9,4 +9,7 @@ public interface IDailyCharacter
     CharacterModel GetDailyCharacter();
     void UpdateDailyCharacter(CharacterModel character);
 
+    
+    void UpdateLastUpdateDateTime(DateTime dateTime);
+    DateTime GetLastUpdateDateTime();
 }
