@@ -40,7 +40,10 @@ public class DailyCharacterUpdateService : BackgroundService
             _dailyCharacter.UpdateDailyCharacter(character);
 
             
-            //1 minute for testing purposes, will be changed to 24 hours
+            //Set last update time to current UTC time
+            _dailyCharacter.UpdateLastUpdateDateTime(DateTime.UtcNow);
+            
+            
             await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
         }
     }
